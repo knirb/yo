@@ -11,31 +11,101 @@ datasource db {
 }
 
 model User {
-  id      Int   @default(autoincrement()) @id
-  yoes    Yo[]
+  id                Int   @default(autoincrement()) @id
+  yos               Yo[]
+  ys                UsersOnYs[]
+  os                UsersOnOs[]
+  exclamationMarks  UsersOnExclamationMarks[]
+  questionMarks     UsersOnQuestionMarks[]
 }
 
 model Yo {
-  id      Int   @default(autoincrement()) @id  
-  y       Y     @relation(fields: [yId], references: [id])
-  yId     Int
-  o       O[]
-  user    User  @relation(fields: [userId], references:[id])
-  userId  Int
+  id                Int   @default(autoincrement()) @id  
+  y                 Y     @relation(fields: [yId], references: [id])
+  yId               Int
+  os                YosOnOs[]
+  exclamationMarks  YosOnExclamationMarks[]
+  questionMarks     YosOnQuestionMarks[]
+  user              User  @relation(fields: [userId], references:[id])
+  userId            Int
 }
 
 model Y {
-  id      Int   @default(autoincrement()) @id
+  id      Int     @default(autoincrement()) @id
   yo      Yo[]
+  owners  UsersOnYs[] 
 }
 
 model O {
   id      Int   @default(autoincrement()) @id
-  yo      Yo    @relation(fields: [yoId], references: [id])
-  yoId    Int
+  yos     YosOnOs[] 
+  owners  UsersOnOs[]
 }
 
-
-model Exclaim {
+model ExclamationMark {
   id      Int   @default(autoincrement()) @id
+  yos     YosOnExclamationMarks[]
+  owners  UsersOnExclamationMarks[]
+}
+
+model QuestionMark {
+  id      Int   @default(autoincrement()) @id
+  yos     YosOnQuestionMarks[]
+  owners  UsersOnQuestionMarks[]
+}
+
+model YosOnOs {
+  @@id([yoId, oId])
+  yo      Yo    @relation(fields: [yoId], references:[id])
+  yoId    Int
+  o       O     @relation(fields: [oId], references:[id])
+  oId     Int
+}
+
+model YosOnExclamationMarks {
+  @@id([yoId, exclamationMarkId])
+  yo                   Yo    @relation(fields: [yoId], references:[id])
+  yoId                 Int
+  exclamationMark      ExclamationMark @relation(fields: [exclamationMarkId], references:[id])
+  exclamationMarkId    Int
+}
+
+model YosOnQuestionMarks {
+  @@id([yoId, questionMarkId])
+  yo                Yo    @relation(fields: [yoId], references:[id])
+  yoId              Int
+  questionMark      QuestionMark @relation(fields: [questionMarkId], references:[id])
+  questionMarkId    Int
+}
+
+model UsersOnYs {
+  @@id([yId, userId])
+  user        User    @relation(fields: [userId], references:[id])
+  userId      Int
+  y           Y       @relation(fields: [yId], references:[id])
+  yId         Int
+}
+
+model UsersOnOs {
+  @@id([oId, userId])
+  user        User    @relation(fields: [userId], references:[id])
+  userId      Int
+  o           O       @relation(fields: [oId], references:[id])
+  oId         Int
+}
+
+model UsersOnExclamationMarks {
+  @@id([exclamationMarkId, userId])
+  user                      User    @relation(fields: [userId], references:[id])
+  userId                    Int
+  exclamationMark           ExclamationMark       @relation(fields: [exclamationMarkId], references:[id])
+  exclamationMarkId         Int
+}
+
+model UsersOnQuestionMarks {
+  @@id([questionMarkId, userId])
+  user                      User    @relation(fields: [userId], references:[id])
+  userId                    Int
+  questionMark              QuestionMark       @relation(fields: [questionMarkId], references:[id])
+  questionMarkId            Int
 }
