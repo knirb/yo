@@ -27,7 +27,8 @@ services:
       - postgres
     env_file:
       - .env
-
+    volumes:
+      - .:/usr/src/app
   postgres:
     image: postgres:14
     env_file:
