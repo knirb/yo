@@ -11,47 +11,81 @@ datasource db {
 }
 
 model User {
-  id                Int   @default(autoincrement()) @id
-  yos               Yo[]
-  ys                UsersOnYs[]
-  os                UsersOnOs[]
-  exclamationMarks  UsersOnExclamationMarks[]
-  questionMarks     UsersOnQuestionMarks[]
+  id                  Int             @default(autoincrement()) @id
+  yos                 Yo[]
+  ys                  UsersOnYs[]
+  os                  UsersOnOs[]
+  exclamationMarks    UsersOnExclamationMarks[]
+  questionMarks       UsersOnQuestionMarks[]
+  username            String?          @unique
+  email               String?          @unique
 }
 
 model Yo {
-  id                Int   @default(autoincrement()) @id  
-  y                 Y     @relation(fields: [yId], references: [id])
-  yId               Int
-  os                YosOnOs[]
-  exclamationMarks  YosOnExclamationMarks[]
-  questionMarks     YosOnQuestionMarks[]
-  user              User  @relation(fields: [userId], references:[id])
-  userId            Int
+  id                  Int   @default(autoincrement()) @id  
+  y                   Y     @relation(fields: [yId], references: [id])
+  yId                 Int
+  os                  YosOnOs[]
+  exclamationMarks    YosOnExclamationMarks[]
+  questionMarks       YosOnQuestionMarks[]
+  user                User  @relation(fields: [userId], references:[id])
+  userId              Int
 }
 
 model Y {
-  id      Int     @default(autoincrement()) @id
-  yo      Yo[]
-  owners  UsersOnYs[] 
+  id                  Int     @default(autoincrement()) @id
+  yo                  Yo[]
+  owners              UsersOnYs[]
+  level               Int     @default(0)  
+  rarity              Int     @default(0) 
+  personality         Personality?     
 }
 
 model O {
-  id      Int   @default(autoincrement()) @id
-  yos     YosOnOs[] 
-  owners  UsersOnOs[]
+  id                  Int   @default(autoincrement()) @id
+  yos                 YosOnOs[] 
+  owners              UsersOnOs[]
+  level               Int     @default(0)  
+  rarity              Int     @default(0)    
+  personality         Personality?     
+
 }
 
 model ExclamationMark {
-  id      Int   @default(autoincrement()) @id
-  yos     YosOnExclamationMarks[]
-  owners  UsersOnExclamationMarks[]
+  id                  Int   @default(autoincrement()) @id
+  yos                 YosOnExclamationMarks[]
+  owners              UsersOnExclamationMarks[]
+  level               Int     @default(0)  
+  rarity              Int     @default(0)    
+  personality         Personality?     
+
 }
 
 model QuestionMark {
-  id      Int   @default(autoincrement()) @id
-  yos     YosOnQuestionMarks[]
-  owners  UsersOnQuestionMarks[]
+  id                  Int   @default(autoincrement()) @id
+  yos                 YosOnQuestionMarks[]
+  owners              UsersOnQuestionMarks[]
+  level               Int     @default(0)  
+  rarity              Int     @default(0)    
+  personality         Personality?     
+
+}
+
+model Personality {
+  id                  Int   @default(autoincrement()) @id
+  openness            Int     @default(0)  
+  conscientiousness   Int     @default(0)  
+  extraversion        Int     @default(0)  
+  agreeableness       Int     @default(0)  
+  neuroticism         Int     @default(0)
+  y                   Y       @relation(fields: [yId], references: [id])
+  yId                 Int
+  o                   O       @relation(fields: [oId], references: [id])
+  oId                 Int
+  exclamationMark     ExclamationMark       @relation(fields: [exclamationMarkId], references: [id])
+  exclamationMarkId   Int
+  questionMark        QuestionMark          @relation(fields: [questionMarkId], references: [id])
+  questionMarkId      Int
 }
 
 model YosOnOs {
